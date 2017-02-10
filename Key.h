@@ -17,8 +17,9 @@ public:
 private:
 
     int keyInput;
-    bitset keyOne;
-    bitset keyTwo;
+    std::bitset<10> key10bit;
+    std::bitset<8> keyOne;
+    std::bitset<8> keyTwo;
 
 
 };
