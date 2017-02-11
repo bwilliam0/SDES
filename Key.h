@@ -4,22 +4,22 @@
 #include <iostream>
 #include <bitset>
 
-
 class Key {
 
 public:
 
-    Key(int seed);
-    Key();
-    int getKeyOne();
-    int getKeyTwo();
+    Key(unsigned int seed);
+    unsigned int getKeyOne();
+    unsigned int getKeyTwo();
 
 private:
 
-    int keyInput;
-    std::bitset<10> key10bit;
-    std::bitset<8> keyOne;
-    std::bitset<8> keyTwo;
+    unsigned int keyInput;
+    unsigned int key10bit;
+    unsigned int keyOne;
+    unsigned int keyTwo;
+    void generateSubKeys();
+    void permuteTen();
 
 
 };
