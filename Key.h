@@ -27,7 +27,7 @@ private:
     void generateSubKeys();
     void permuteTen();
     void leftShiftOne();
-    int permuteEight(int inputKey);
+    int permuteEight(unsigned int inputKey);
 
 };
 

@@ -6,9 +6,9 @@
 
 // Define parallel arrays of bit masks and shift amounts used to permute the 10 bit key
 
-const unsigned int Key::masks[] = {0x200, 0x100, 0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1};
+const unsigned int Key::masks[] = {512, 256, 128, 64, 32, 16, 8, 4, 2, 1};
 
-const int Key::pTenShifts[] = {6, 1, -2, 1, -4, -3, 1, -2, -1, -4};
+const int Key::pTenShifts[] = {6, 1, -2, 1, -3, 4, -3, 1, -1, -4};
 
 const int Key::pEightShifts[] = {-3, 1, -2, 2, -1, 3, -1, 1};
 
@@ -16,7 +16,7 @@ const unsigned int Key::pEightMasks[] = {0x10, 0x80, 0x08, 0x40, 0x04, 0x20, 0x0
 
 Key::Key(unsigned int seed) {
 
-    if (seed < 1023) { //input must be less than 10 bits
+    if (seed < 1024) { //input must be less than 10 bits
         keyInput = seed;
         generateSubKeys();
     } else {
@@ -42,6 +42,9 @@ void Key::generateSubKeys() {
     permuteTen();
     leftShiftOne();
     keyOne = permuteEight(key10bit);
+    leftShiftOne();
+    leftShiftOne();
+    keyTwo = permuteEight(key10bit);
 
 }
 
@@ -90,7 +93,7 @@ void Key::leftShiftOne() {
 
 }
 
-int Key::permuteEight(int inputKey) {
+int Key::permuteEight(unsigned int inputKey) {
 
     int outputKey = 0;
     unsigned int temp;

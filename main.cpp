@@ -8,5 +8,6 @@ int main()
 {
 
     Key keygen(0x282);
+    Key keygen2(1023);
 
 }
