@@ -2,7 +2,8 @@
 #include <string>
 #include <bitset>
 #include <vector>
-#include "conversion.h"
+#include "SDES.h"
+//#include "conversion.h"
 #include "Key.h"
 
 using namespace std;
@@ -23,29 +24,39 @@ int main()
     cout << endl;
 
     //test string to bitset conversion
-    bitsetPlainText = stringToBitset(input);
-    str = bitsetToString(bitsetPlainText);
-
+    //bitsetPlainText = stringToBitset(input);
+    //str = bitsetToString(bitsetPlainText);
+    /*
     cout << endl << "original string:" << endl << str;
-
     cout << endl << endl << "Enter a char:" << endl;
     cin >> c;
-
+    */
     //test char to bitset conversion
-    bitsetObj = charToBitset(c);
-    cout << endl << "bits: ";
+    //bitsetObj = charToBitset(c);
+    //cout << endl << "bits: ";
 
     //loop through each bit
+    /*
     for(size_t i = 0; i < bitsetObj.size(); i++)
     {
         cout << bitsetObj[i];
     }
+    */
 
     //test bitset to char
+    /*
     c2 = bitsetToChar(bitsetObj);
     cout << endl<< "original char: " << c << endl;
-    cout << "char after bitset conversion: " << c2;
-
+    cout << "char after bitset conversion: " << c2 << endl << endl;
+    */
+    SDES sdes(input);
+    sdes.printBitsetPlainText();
+    for(int i = 0; i < sdes.getBitsetPlainTextSize(); i++){
+        sdes.initPermute(i);
+    }
+    sdes.printBitsetCipherText();
+    sdes.bitsetToString();
+    cout << endl;
     Key keygen(0x282);
     Key keygen2(1023);
 
