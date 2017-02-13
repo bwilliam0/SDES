@@ -23,7 +23,7 @@ SDES(string userInput, Key keyone, Key keytwo){
     stringToBitset();
 }*/
 
-void SDES::initPermute(int i)
+void SDES::initPermute(int index)
 {
     if (encryptDoneFlag == true)
     {
@@ -33,19 +33,19 @@ void SDES::initPermute(int i)
     int newPos[] = {2, 6, 3, 1, 4, 8, 5, 7};
     bitset<8> tempObj(0);
     int tempInt;
-    int range = bitsetVectTemp[i].size() - 1;
-    cout << "initPermBits: ";
-    for (size_t j = 0; j < bitsetVectTemp[i].size(); j++)
+    int range = bitsetVectTemp[index].size() - 1;
+    //cout << "Doing initial permuation: " << endl;
+    for (size_t j = 0; j < bitsetVectTemp[index].size(); j++)
     {
         tempInt = newPos[j] - 1;
-        tempObj[range - j] = bitsetVectTemp[i][range - tempInt];
-        cout << tempObj[range - j];
+        tempObj[range - j] = bitsetVectTemp[index][range - tempInt];
+        //cout << tempObj[range - j];
     }
     if (encryptDoneFlag == false)
         bitsetCipherText.push_back(tempObj);
     else
-        bitsetCipherText[i] = tempObj;
-    cout << endl;
+        bitsetCipherText[index] = tempObj;
+    //cout << endl;
 }
 
 void SDES::inverseInitPermute(int index)
@@ -54,22 +54,23 @@ void SDES::inverseInitPermute(int index)
     bitset<8> tempObj(0);
     int tempInt;
     int range = bitsetCipherText[index].size() - 1;
-    cout << "inverse initPermBits: ";
+    //cout << "Doing inverse initial permuation: " << endl;
     for (size_t j = 0; j < bitsetCipherText[index].size(); j++)
     {
         tempInt = newPos[j] - 1;
         tempObj[range - j] = bitsetCipherText[index][range - tempInt];
-        cout << tempObj[range - j];
+        //cout << tempObj[range - j];
     }
     bitsetCipherText[index] = tempObj;
-    cout << endl;
+    //cout << endl;
 }
 
 void SDES::funcK(int index, bitset<8> key)
 {
+    //cout << "Doing func k: " << endl;
     expandAndPermute(index);
     bitsetTemp ^= key;
-    cout << "xorfunck: " << bitsetTemp << endl;
+    //cout << "xorfunck: " << bitsetTemp << endl;
     sboxSub();
     permuteFour();
     xorFunc(index);
@@ -77,6 +78,7 @@ void SDES::funcK(int index, bitset<8> key)
 
 void SDES::swapHalfs(int index)
 {
+    //cout << "Swapping halfs of first round:" << endl;
     bitset<4> rightSideInitPerm(0);
     bitset<4> temp;
     for (int j = 0; j < 4; j++)
@@ -90,17 +92,12 @@ void SDES::swapHalfs(int index)
         bitsetCipherText[index][j] = fourbitTemp[j];
     }
 
-    cout << "bitsetCipherText after swap halfs " << bitsetCipherText[index] << endl;
-}
-
-string SDES::getInput() const
-{
-    return input;
+    //cout << "bitsetCipherText after swap halfs " << bitsetCipherText[index] << endl;
 }
 
 void SDES::printBitsetPlainText()
 {
-    cout << "Printing out bitsetPlainText" << endl;
+    cout << "Printing out plain text bits:" << endl;
     for(int i = 0; i < bitsetPlainText.size(); i++)
     {
         cout << bitsetPlainText[i] << " ";
@@ -110,7 +107,7 @@ void SDES::printBitsetPlainText()
 
 void SDES::printBitsetCipherText()
 {
-    cout << "Printing out bitsetCipherText" << endl;
+    cout << "Printing out cipher text bits:" << endl;
     for(int i = 0; i < bitsetCipherText.size(); i++)
     {
         cout << bitsetCipherText[i] << " ";
@@ -118,14 +115,44 @@ void SDES::printBitsetCipherText()
     cout << endl;
 }
 
-int SDES::getBitsetPlainTextSize()
+int SDES::getBitsetPlainTextSize() const
 {
     return bitsetPlainText.size();
 }
 
-int SDES::getBitsetCipherTextSize()
+int SDES::getBitsetCipherTextSize() const
 {
     return bitsetCipherText.size();
+}
+
+void SDES::bitsetToString()
+{
+    string str = "";
+
+    //loop through each bitset and convert to char
+    for(int i = 0; i < bitsetPlainText.size(); i++)
+    {
+        unsigned long charAsInt = bitsetPlainText[i].to_ulong(); //convert bitset to long
+        unsigned char c = static_cast<unsigned char>(charAsInt); //convert long to char
+        str += c;
+    }
+
+    cout << "Plain text before encryption:" << endl << str;
+}
+
+void SDES::cipherTextToString()
+{
+    string str = "";
+
+    //loop through each bitset and convert to char
+    for(int i = 0; i < bitsetCipherText.size(); i++)
+    {
+        unsigned long charAsInt = bitsetCipherText[i].to_ulong(); //convert bitset to long
+        unsigned char c = static_cast<unsigned char>(charAsInt); //convert long to char
+        str += c;
+    }
+
+    cout << "Cipher text after decryption:" << endl << str;
 }
 
 void SDES::setEncryptFlag(bool flag)
@@ -133,22 +160,22 @@ void SDES::setEncryptFlag(bool flag)
     encryptDoneFlag = flag;
 }
 
+/** Private functions **/
 void SDES::expandAndPermute(int index)
 {
-    printBitsetCipherText();
     int newPos[] = {4, 1, 2, 3, 2, 3, 4, 1};
     int tempInt;
     int arraySize = bitsetCipherText[index].size() - 1;
     int range = 3;
-    cout << "expandAndPermuteBits: ";
+    //cout << "expandAndPermuteBits: ";
     for (size_t j = 0; j < bitsetCipherText[index].size(); j++)
     {
         tempInt = newPos[j] - 1;
         bitsetTemp[arraySize - j] = bitsetCipherText[index][range - tempInt];
-        cout << bitsetTemp[arraySize - j];
+        //cout << bitsetTemp[arraySize - j];
     }
 
-    cout << endl;
+    //cout << endl;
 }
 
 void SDES::sboxSub()
@@ -198,7 +225,7 @@ void SDES::sboxSub()
     fourbitTemp[2] = tempTwo[0];
     fourbitTemp[3] = tempTwo[1];
 
-    cout << "sbox: " << fourbitTemp << endl;
+    //cout << "sbox: " << fourbitTemp << endl;
 }
 
 void SDES::permuteFour()
@@ -208,16 +235,16 @@ void SDES::permuteFour()
 
     int tempInt;
     int range = 3;
-    cout << "permutefour: ";
+    //cout << "permutefour: ";
     for (int i = 0; i <fourbitTemp.size(); i++)
     {
         tempInt = newPos[i] - 1;
         tempBitset[range - i] = fourbitTemp[range - tempInt];
-        cout << tempBitset[range - i];
+        //cout << tempBitset[range - i];
     }
 
     fourbitTemp = tempBitset;
-    cout << endl;
+    //cout << endl;
 }
 
 void SDES::xorFunc(int index)
@@ -235,7 +262,7 @@ void SDES::xorFunc(int index)
         bitsetTemp[j + 4] = fourbitTemp[j];
     }
     bitsetCipherText[index] = bitsetTemp;
-    cout << "xorFunc: " << fourbitTemp << endl;
+    //cout << "xorFunc: " << fourbitTemp << endl;
 }
 
 void SDES::stringToBitset()
@@ -244,38 +271,8 @@ void SDES::stringToBitset()
     for (size_t i = 0; i < input.size(); i++)
     {
       bitsetPlainText.push_back(bitset<8>(input[i])); //store vector of bitset objs
-      cout << "bits: " << bitsetPlainText[i];
-      cout << " char: " << input[i] << endl;
+      //cout << "bits: " << bitsetPlainText[i];
+      //cout << " char: " << input[i] << endl;
     }
     bitsetVectTemp = bitsetPlainText;
-}
-
-void SDES::bitsetToString()
-{
-    string str = "";
-
-    //loop through each bitset and convert to char
-    for(int i = 0; i < bitsetPlainText.size(); i++)
-    {
-        unsigned long charAsInt = bitsetPlainText[i].to_ulong(); //convert bitset to long
-        unsigned char c = static_cast<unsigned char>(charAsInt); //convert long to char
-        str += c;
-    }
-
-    cout << "bitsetToString:" << endl << str;
-}
-
-void SDES::cipherTextToString()
-{
-    string str = "";
-
-    //loop through each bitset and convert to char
-    for(int i = 0; i < bitsetCipherText.size(); i++)
-    {
-        unsigned long charAsInt = bitsetCipherText[i].to_ulong(); //convert bitset to long
-        unsigned char c = static_cast<unsigned char>(charAsInt); //convert long to char
-        str += c;
-    }
-
-    cout << "cipherTextToString:" << endl << str;
 }

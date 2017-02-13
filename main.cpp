@@ -2,25 +2,58 @@
 #include <string>
 #include <bitset>
 #include <vector>
+#include <random>
+#include <time.h>
 #include "SDES.h"
 #include "Key.h"
 
 using namespace std;
 
+unsigned long createRandomTenBitKey()
+{
+    srand (time(NULL)); //seed rand generator
+    bitset<10> rand10BitKey;
+    unsigned long randKey;
+
+    cout << endl << "Creating random 10 bit key" << endl;
+    for (int index = 0; index < 10; index++)
+    {
+        int x = rand() % 2;
+        bitset<1> oneBit(x);
+        rand10BitKey[index] = oneBit[0];
+    }
+
+    randKey = rand10BitKey.to_ulong();
+    cout << "random key bits: " << rand10BitKey << endl;
+    cout << "random key bits as unsigned long: " << randKey << endl;
+
+    return randKey;
+}
+
 int main()
 {
     string input;
     bitset<8> key1, key2;
-    key1 = bitset<8>(164); //test with youtube example keys
-    key2 = bitset<8>(67);
+    unsigned long randKey;
 
     //get string input from user
     cout << "Enter a string to encrypt:" << endl;
     getline(cin, input);  //store string including spaces
-    cout << endl;
+
+    randKey = createRandomTenBitKey();
+
+    cout << endl << "Generating key1 and key2" << endl;
+
+    //Key keygen(1023);
+    Key keygen(randKey);
+
+    key1 = keygen.getKeyOne();
+    key2 = keygen.getKeyTwo();
+
+    cout << "key1 bits: " << key1 << endl;
+    cout << "key2 bits: " << key2 << endl;
 
     SDES sdes(input);
-    sdes.printBitsetPlainText();
 
     //encrypt
     cout << endl << "Starting Encryption" << endl;
@@ -43,15 +76,15 @@ int main()
                 sdes.inverseInitPermute(i);
             }
 
-            cout << endl;
+            //cout << endl;
         }
 
-        sdes.printBitsetCipherText();
+        //sdes.printBitsetCipherText();
     }
     sdes.setEncryptFlag(true);
 
     //decrypt
-    cout << "Starting Decryption" << endl;
+    cout << endl << "Starting Decryption" << endl;
     for(int i = 0; i < sdes.getBitsetCipherTextSize(); i++)
     {
         cout << "Decrypting char num: " << i << endl;
@@ -71,22 +104,20 @@ int main()
                 sdes.inverseInitPermute(i);
             }
         }
-        sdes.printBitsetCipherText();
+        //sdes.printBitsetCipherText();
 
-        cout << endl;
+        //cout << endl;
     }
 
+    cout << endl << "Plain text bits before encryption" << endl;
     sdes.printBitsetPlainText();
+    cout << endl << "Cipher text bits after decryption" << endl;
     sdes.printBitsetCipherText();
-    sdes.bitsetToString();
     cout << endl;
+    sdes.bitsetToString();
+    cout << endl << endl;
     sdes.cipherTextToString();
     cout << endl;
 
-    //Key keygen(0x282);
-    //Key keygen2(1023);
-
     return 0;
-
-
 }

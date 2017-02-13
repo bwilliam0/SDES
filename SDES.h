@@ -24,24 +24,21 @@ class SDES {
         void sboxSub();
         void permuteFour();
         void xorFunc(int index);
-
-
+        void stringToBitset();
 
     public:
         SDES();
         SDES(string userInput);
         //SDES(string userInput, Key key1, Key key2);
-        void initPermute(int i);
+        void initPermute(int index);
         void inverseInitPermute(int index);
         void funcK(int index, bitset<8> key);
         void swapHalfs(int index);
-        string getInput() const;
         void printBitsetPlainText();
         void printBitsetCipherText();
-        int getBitsetPlainTextSize();
-        int getBitsetCipherTextSize();
+        int getBitsetPlainTextSize() const;
+        int getBitsetCipherTextSize() const;
         void bitsetToString();
-        void stringToBitset();
         void cipherTextToString();
         void setEncryptFlag(bool flag);
 };
