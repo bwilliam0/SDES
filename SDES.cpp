@@ -2,7 +2,6 @@
 #include <string>
 #include <bitset>
 #include "SDES.h"
-//#include "conversion.h"
 
 using namespace std;
 
@@ -11,7 +10,7 @@ SDES::SDES(){}
 SDES::SDES(string userInput){
     input = userInput;
     bitsetTemp.reset();
-    count = 0;
+    encryptDoneFlag = false;
     //key1 = bitset<8>(164);
     //key2 = bitset<8>(67);
     stringToBitset();
@@ -26,7 +25,7 @@ SDES(string userInput, Key keyone, Key keytwo){
 
 void SDES::initPermute(int i)
 {
-    if (count > 0)
+    if (encryptDoneFlag == true)
     {
         bitsetVectTemp = bitsetCipherText;
     }
@@ -42,7 +41,7 @@ void SDES::initPermute(int i)
         tempObj[range - j] = bitsetVectTemp[i][range - tempInt];
         cout << tempObj[range - j];
     }
-    if (count == 0)
+    if (encryptDoneFlag == false)
         bitsetCipherText.push_back(tempObj);
     else
         bitsetCipherText[i] = tempObj;
@@ -51,12 +50,10 @@ void SDES::initPermute(int i)
 
 void SDES::inverseInitPermute(int index)
 {
-    //bitset<8> temp(237); //test 11101101 to 01110111
     int newPos[] = {4, 1, 3, 5, 7, 2, 8, 6};
     bitset<8> tempObj(0);
     int tempInt;
     int range = bitsetCipherText[index].size() - 1;
-    cout << "bitsetCipherText[index]: " << bitsetCipherText[index] << endl;
     cout << "inverse initPermBits: ";
     for (size_t j = 0; j < bitsetCipherText[index].size(); j++)
     {
@@ -73,7 +70,7 @@ void SDES::funcK(int index, bitset<8> key)
     expandAndPermute(index);
     bitsetTemp ^= key;
     cout << "xorfunck: " << bitsetTemp << endl;
-    //sboxSub();
+    sboxSub();
     permuteFour();
     xorFunc(index);
 }
@@ -94,13 +91,6 @@ void SDES::swapHalfs(int index)
     }
 
     cout << "bitsetCipherText after swap halfs " << bitsetCipherText[index] << endl;
-    /*
-    cout << "rightside: " << rightSideInitPerm << endl;
-    temp = rightSideInitPerm;
-    rightSideInitPerm = fourbitTemp;
-    fourbitTemp = temp;
-    cout << "swaphalfs: " << fourbitTemp <<  rightSideInitPerm << endl;
-    */
 }
 
 string SDES::getInput() const
@@ -138,21 +128,15 @@ int SDES::getBitsetCipherTextSize()
     return bitsetCipherText.size();
 }
 
-int SDES::getBitsetVectTempSize()
+void SDES::setEncryptFlag(bool flag)
 {
-    return bitsetVectTemp.size();
-}
-
-void SDES::setCount(int countVar)
-{
-    count = countVar;
+    encryptDoneFlag = flag;
 }
 
 void SDES::expandAndPermute(int index)
 {
     printBitsetCipherText();
     int newPos[] = {4, 1, 2, 3, 2, 3, 4, 1};
-    //bitset<8> tempObj(0);
     int tempInt;
     int arraySize = bitsetCipherText[index].size() - 1;
     int range = 3;
@@ -163,18 +147,62 @@ void SDES::expandAndPermute(int index)
         bitsetTemp[arraySize - j] = bitsetCipherText[index][range - tempInt];
         cout << bitsetTemp[arraySize - j];
     }
-    //bitsetCipherText[index] = bitsetTemp;
+
     cout << endl;
 }
 
 void SDES::sboxSub()
 {
+    bitset<2> zero(0), one(1), two(2), three(3), tempTwo;
+    bitset<2> bit1bit4L, bit2bit3L, bit1bit4R, bit2bit3R;
+    unsigned long bit1bit4Left, bit2bit3Left;
+    unsigned long bit1bit4Right, bit2bit3Right;
+    bitset<2> s1[4][4] = {{one,zero,three,two},{three,two,one,zero},
+                          {zero,two,one,three},{three,one,three,two}};
+    bitset<2> s2[4][4] = {{zero,one,two,three},{two,zero,one,three},
+                          {three,zero,one,zero},{two,one,zero,three}};
 
+    for (int j = 0; j < 8; j++)
+    {
+        switch (j)
+        {
+            case 0: bit1bit4R[0] = bitsetTemp[j];
+                    break;
+            case 1: bit2bit3R[0] = bitsetTemp[j];
+                    break;
+            case 2: bit2bit3R[1] = bitsetTemp[j];
+                    break;
+            case 3: bit1bit4R[1] = bitsetTemp[j];
+                    break;
+            case 4: bit1bit4L[0] = bitsetTemp[j];
+                    break;
+            case 5: bit2bit3L[0] = bitsetTemp[j];
+                    break;
+            case 6: bit2bit3L[1] = bitsetTemp[j];
+                    break;
+            case 7: bit1bit4L[1] = bitsetTemp[j];
+                    break;
+        }
+    }
+    bit1bit4Right = bit1bit4R.to_ulong();
+    bit2bit3Right = bit2bit3R.to_ulong();
+    bit1bit4Left = bit1bit4L.to_ulong();
+    bit2bit3Left = bit2bit3L.to_ulong();
+
+    tempTwo = s2[bit1bit4Right][bit2bit3Right];
+
+    fourbitTemp[0] = tempTwo[0];
+    fourbitTemp[1] = tempTwo[1];
+    tempTwo = s1[bit1bit4Left][bit2bit3Left];
+
+    fourbitTemp[2] = tempTwo[0];
+    fourbitTemp[3] = tempTwo[1];
+
+    cout << "sbox: " << fourbitTemp << endl;
 }
 
 void SDES::permuteFour()
 {
-    fourbitTemp = bitset<4>(11); //testing sbox result as 1011
     bitset<4> tempBitset(0);
     int newPos[] = {2, 4, 3, 1};
 
@@ -198,9 +226,15 @@ void SDES::xorFunc(int index)
     for (int j = 0; j < 4; j++)
     {
         leftSideInitPerm[j] = bitsetCipherText[index][j + 4];
+        bitsetTemp[j] = bitsetCipherText[index][j];
+
     }
-    cout << "leftside: " << leftSideInitPerm << endl;
     fourbitTemp ^= leftSideInitPerm;
+    for (int j = 0; j < 4; j++)
+    {
+        bitsetTemp[j + 4] = fourbitTemp[j];
+    }
+    bitsetCipherText[index] = bitsetTemp;
     cout << "xorFunc: " << fourbitTemp << endl;
 }
 

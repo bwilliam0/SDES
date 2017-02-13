@@ -6,7 +6,6 @@
 #include <bitset>
 #include <vector>
 #include "Key.h"
-//#include "conversion.h"
 
 using namespace std;
 
@@ -20,7 +19,7 @@ class SDES {
         string input;
         //Key key1, key2;
         //bitset<8> key1, key2;
-        int count;
+        bool encryptDoneFlag;
         void expandAndPermute(int index);
         void sboxSub();
         void permuteFour();
@@ -41,30 +40,10 @@ class SDES {
         void printBitsetCipherText();
         int getBitsetPlainTextSize();
         int getBitsetCipherTextSize();
-        int getBitsetVectTempSize();
         void bitsetToString();
         void stringToBitset();
         void cipherTextToString();
-        void setCount(int countVar);
-
-
+        void setEncryptFlag(bool flag);
 };
 
 #endif // SDES_H_INCLUDED
-/*
-printBitsetCipherText();
-    int newPos[] = {4, 1, 2, 3, 2, 3, 4, 1};
-    //bitset<8> tempObj(0);
-    int tempInt;
-    int arraySize = bitsetCipherText[index].size() - 1;
-    int range = 3;
-    cout << "expandAndPermuteBits: ";
-    for (size_t j = 0; j < bitsetCipherText[index].size(); j++)
-    {
-        tempInt = newPos[j] - 1;
-        bitsetTemp[arraySize - j] = bitsetCipherText[index][range - tempInt];
-        cout << bitsetTemp[arraySize - j];
-    }
-    //bitsetCipherText[index] = bitsetTemp;
-    cout << endl;
-}*/
