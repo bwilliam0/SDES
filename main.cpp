@@ -9,8 +9,8 @@
 using namespace std;
 
 //vectors to hold each char as a bitset
-vector<bitset<8>> bitsetPlainText; //each char from string as a bitset
-vector<bitset<8>> bitsetCipherText;
+//vector<bitset<8>> bitsetPlainText; //each char from string as a bitset
+//vector<bitset<8>> bitsetCipherText;
 
 int main()
 {
@@ -49,16 +49,70 @@ int main()
     cout << endl<< "original char: " << c << endl;
     cout << "char after bitset conversion: " << c2 << endl << endl;
     */
+    bitset<8> key1, key2;
+    int count = 0;
+    key1 = bitset<8>(164);
+    key2 = bitset<8>(67);
     SDES sdes(input);
     sdes.printBitsetPlainText();
-    for(int i = 0; i < sdes.getBitsetPlainTextSize(); i++){
-        sdes.initPermute(i);
+
+    for(int index = 0 ; index < 2; index++)
+    {
+        cout << "index: " << index << endl;
+        for(int i = 0; i < sdes.getBitsetPlainTextSize(); i++)
+        {
+            sdes.initPermute(i);
+            if (index == 0)
+            {
+                sdes.funcK(i, key1);
+                sdes.swapHalfs(i);
+            }
+            else
+            {
+                sdes.funcK(i, key2);
+                sdes.inverseInitPermute(i);
+            }
+        }
+        count++;
+        sdes.printBitsetCipherText();
+        sdes.setCount(count);
+        cout << endl;
     }
+
+    for(int index = 0 ; index < 2; index++)
+    {
+        cout << "index: " << index << endl;
+        for(int i = 0; i < sdes.getBitsetCipherTextSize(); i++)
+        {
+            sdes.initPermute(i);
+            if (index == 0)
+            {
+                sdes.funcK(i, key2);
+                sdes.swapHalfs(i);
+            }
+            else
+            {
+                sdes.funcK(i, key1);
+                sdes.inverseInitPermute(i);
+            }
+        }
+        count++;
+        sdes.printBitsetCipherText();
+        sdes.setCount(count);
+        cout << endl;
+    }
+
+    sdes.printBitsetPlainText();
     sdes.printBitsetCipherText();
     sdes.bitsetToString();
+
+
     cout << endl;
-    Key keygen(0x282);
-    Key keygen2(1023);
+    sdes.cipherTextToString();
+    cout << endl;
+    //cout << bitset<2>(1);
+    //Key keygen(0x282);
+    //Key keygen2(1023);
 
     return 0;
 
