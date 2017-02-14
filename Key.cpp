@@ -80,7 +80,9 @@ void Key::permuteTen() {
         key10bit = key10bit | temp;     // place the bit into the new key
     }
 
-    //std::cout << "The result of P10 is: " << key10bit << std::endl;
+#ifdef DEBUG_KEY
+    std::cout << "The result of P10 is: " << key10bit << std::endl;
+#endif
 
 }
 
@@ -112,7 +114,9 @@ void Key::leftShiftOne() {
     key10bit = key10bit | right5bits;
     key10bit = key10bit | left5bits;
 
-    //std::cout << "After LS1 key10bit is: " << key10bit << std::endl;
+#ifdef DEBUG_KEY
+    std::cout << "After LS1 key10bit is: " << key10bit << std::endl;
+#endif
 
 }
 
@@ -134,7 +138,9 @@ unsigned int Key::permuteEight(unsigned int inputKey) {
         outputKey = outputKey | temp;       // place the bit into the new key
     }
 
-    //std::cout << "The result of P8 is: " << outputKey << std::endl;
+#ifdef DEBUG_KEY
+    std::cout << "The result of P8 is: " << outputKey << std::endl;
+#endif
 
 }
 
