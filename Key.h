@@ -5,6 +5,15 @@
 #include <stdexcept>
 #include <bitset>
 
+/**
+ * @class This class generates two 8 bit SDES subkeys from a ten bit key provided to the constructor
+ *
+ * The Key class is used to generate the two 8 bit subkeys used by the SDES encryption algorithm from
+ * a ten bit key provided to the constructor. The constructor takes an integer as an argument and
+ * checks to ensure that it is the correct number of bits. It then passes it to several functions to permute the ten bit
+ * number, shift the high 5 and the low 5 bits left, permute it to an eight bit number (creating the first subkey),
+ * perform two more left shifts on the ten bit number, and finally a second 8 bit to generate the second subkey.
+ */
 class Key {
 
 public:
