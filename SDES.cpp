@@ -115,6 +115,16 @@ void SDES::printBitsetCipherText()
     cout << endl;
 }
 
+void SDES::printBitsetCipherTextAfterEncrypt()
+{
+    cout << "Printing out cipher text bits after encryption / before decryption:" << endl;
+    for(int i = 0; i < bitsetCipherTextAfterEncrypt.size(); i++)
+    {
+        cout << bitsetCipherTextAfterEncrypt[i] << " ";
+    }
+    cout << endl;
+}
+
 int SDES::getBitsetPlainTextSize() const
 {
     return bitsetPlainText.size();
@@ -158,6 +168,7 @@ void SDES::cipherTextToString()
 void SDES::setEncryptFlag(bool flag)
 {
     encryptDoneFlag = flag;
+    bitsetCipherTextAfterEncrypt = bitsetCipherText;
 }
 
 /** Private functions **/

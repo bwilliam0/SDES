@@ -82,6 +82,10 @@ int main()
         //sdes.printBitsetCipherText();
     }
     sdes.setEncryptFlag(true);
+    cout << endl;
+    sdes.printBitsetPlainText();
+    cout << endl;
+    sdes.printBitsetCipherTextAfterEncrypt();
 
     //decrypt
     cout << endl << "Starting Decryption" << endl;

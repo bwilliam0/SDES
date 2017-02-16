@@ -13,6 +13,7 @@ class SDES {
     private:
         vector<bitset<8>> bitsetPlainText; //each char from string as a bitset
         vector<bitset<8>> bitsetCipherText;
+        vector<bitset<8>> bitsetCipherTextAfterEncrypt;
         vector<bitset<8>> bitsetVectTemp;
         bitset<8> bitsetTemp;
         bitset<4> fourbitTemp;
@@ -36,6 +37,7 @@ class SDES {
         void swapHalfs(int index);
         void printBitsetPlainText();
         void printBitsetCipherText();
+        void printBitsetCipherTextAfterEncrypt();
         int getBitsetPlainTextSize() const;
         int getBitsetCipherTextSize() const;
         void bitsetToString();
