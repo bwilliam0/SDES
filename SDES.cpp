@@ -1,3 +1,6 @@
+#ifndef _SDES_CPP
+#define _SDES_CPP
+
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -287,3 +290,5 @@ void SDES::stringToBitset()
     }
     bitsetVectTemp = bitsetPlainText;
 }
+
+#endif

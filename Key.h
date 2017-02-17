@@ -6,7 +6,7 @@
 #include <bitset>
 
 /**
- * @class This class generates two 8 bit SDES subkeys from a ten bit key provided to the constructor
+ * @class Key Key.h This class generates two 8 bit SDES subkeys from a ten bit key provided to the constructor
  *
  * The Key class is used to generate the two 8 bit subkeys used by the SDES encryption algorithm from
  * a ten bit key provided to the constructor. The constructor takes an integer as an argument and

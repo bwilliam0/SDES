@@ -5,7 +5,6 @@
 #include <random>
 #include <time.h>
 #include "SDES.h"
-#include "Key.h"
 
 using namespace std;
 
