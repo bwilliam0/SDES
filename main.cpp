@@ -16,7 +16,6 @@
 #include <random> // used to generate random number
 #include <time.h> // used to seed random generator
 #include "SDES.h"
-#include "Key.h"
 
 using namespace std;
 

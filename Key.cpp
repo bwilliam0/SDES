@@ -58,6 +58,7 @@ std::bitset<Key::SUBKEY_SIZE> Key::getKeyTwo() {
  */
 void Key::generateSubKeys() {
 
+    key10bit = 0;
     permuteTen();
     leftShiftOne();
     keyOne = permuteEight(key10bit);

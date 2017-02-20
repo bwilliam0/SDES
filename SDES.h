@@ -176,4 +176,6 @@ class SDES {
         void setEncryptFlag(bool flag);
 };
 
+//#include "SDES.cpp"
+
 #endif // SDES_H_INCLUDED

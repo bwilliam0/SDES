@@ -6,7 +6,7 @@
 #include <bitset>
 
 /**
- * @class This class generates two 8 bit SDES subkeys from a ten bit key provided to the constructor
+ * @class Key Key.h This class generates two 8 bit SDES subkeys from a ten bit key provided to the constructor
  *
  * @authors: Brady Anderson, Jesse Babcock
  *
