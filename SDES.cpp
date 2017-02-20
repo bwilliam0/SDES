@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /** @file SDES.cpp
 
     @authors: Jesse Babcock, Brady Anderson
@@ -6,10 +5,8 @@
     Implementation file for SDES class.
 
 */
-=======
 #ifndef _SDES_CPP
 #define _SDES_CPP
->>>>>>> origin/master
 
 #include <iostream>
 #include <string>
