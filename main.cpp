@@ -1,21 +1,39 @@
+/** @file main.cpp
+
+    @authors: Jesse Babcock, Brady Anderson
+
+    The main file coordinates execution of the Key and SDES classes. A random 10 bit key
+    is generated and used in Key.h. This class then creates 2 8 bit subkeys for 2 rounds
+    of bit transformations in encryption and decryption processing. The plaintext, ciphertext,
+    bit patterns, and steps of execution are displayed to the user.
+
+*/
+
 #include <iostream>
 #include <string>
 #include <bitset>
-#include <vector>
-#include <random>
-#include <time.h>
+#include <vector> // store bitsets in vector
+#include <random> // used to generate random number
+#include <time.h> // used to seed random generator
 #include "SDES.h"
 #include "Key.h"
 
 using namespace std;
 
+/** @brief create random 10 bit key for Key.h
+ *
+ * @return unsigned long 10 bit key as an int
+ *
+ */
 unsigned long createRandomTenBitKey()
 {
     srand (time(NULL)); //seed rand generator
-    bitset<10> rand10BitKey;
+    bitset<10> rand10BitKey; // store 10 bits
     unsigned long randKey;
 
     cout << endl << "Creating random 10 bit key" << endl;
+
+    // create 1 bit during each iter
     for (int index = 0; index < 10; index++)
     {
         int x = rand() % 2;
@@ -32,28 +50,27 @@ unsigned long createRandomTenBitKey()
 
 int main()
 {
-    string input;
-    bitset<8> key1, key2;
-    unsigned long randKey;
+    string input; // user input
+    bitset<8> key1, key2; // 2 subkeys
+    unsigned long randKey; // 10 bit key for key gen
 
     //get string input from user
     cout << "Enter a string to encrypt:" << endl;
     getline(cin, input);  //store string including spaces
 
-    randKey = createRandomTenBitKey();
+    randKey = createRandomTenBitKey(); // create random 10 bit key
 
     cout << endl << "Generating key1 and key2" << endl;
 
-    //Key keygen(1023);
-    Key keygen(randKey);
+    Key keygen(randKey); // create key obj
 
-    key1 = keygen.getKeyOne();
-    key2 = keygen.getKeyTwo();
+    key1 = keygen.getKeyOne(); // get first sub key
+    key2 = keygen.getKeyTwo(); // get second sub key
 
     cout << "key1 bits: " << key1 << endl;
     cout << "key2 bits: " << key2 << endl;
 
-    SDES sdes(input);
+    SDES sdes(input); // create SDES obj
 
     //encrypt
     cout << endl << "Starting Encryption" << endl;
@@ -61,6 +78,8 @@ int main()
     {
         cout << "Encrypting char num: " << i << endl;
         sdes.initPermute(i);
+
+        // 2 rounds of transformations
         for(int index = 0 ; index < 2; index++)
         {
             if (index == 0)
@@ -81,7 +100,7 @@ int main()
 
         //sdes.printBitsetCipherText();
     }
-    sdes.setEncryptFlag(true);
+    sdes.setEncryptFlag(true); // encryption is done
     cout << endl;
     sdes.printBitsetPlainText();
     cout << endl;
@@ -93,6 +112,8 @@ int main()
     {
         cout << "Decrypting char num: " << i << endl;
         sdes.initPermute(i);
+
+        // 2 rounds of transformations
         for(int index = 0 ; index < 2; index++)
         {
             if (index == 0)
