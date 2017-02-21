@@ -45,6 +45,11 @@ Key::Key(unsigned int seed) {
  */
 std::bitset<Key::SUBKEY_SIZE> Key::getKeyOne() {
 
+#ifdef DEBUG_KEY
+    std::cout << "Key 1 as integer: " << keyOne << std::endl;
+    std::cout << "Key 1 as bitset: " << std::bitset<SUBKEY_SIZE>(keyOne).to_string() << std::endl;
+#endif
+
     return std::bitset<SUBKEY_SIZE>(keyOne);
 
 }
@@ -55,6 +60,11 @@ std::bitset<Key::SUBKEY_SIZE> Key::getKeyOne() {
  */
 std::bitset<Key::SUBKEY_SIZE> Key::getKeyTwo() {
 
+#ifdef DEBUG_KEY
+    std::cout << "Key 2 as integer: " << keyTwo << std::endl;
+    std::cout << "Key 2 as bitset: " << std::bitset<SUBKEY_SIZE>(keyTwo).to_string() << std::endl;
+#endif
+
     return std::bitset<SUBKEY_SIZE>(keyTwo);
 
 }
@@ -64,6 +74,8 @@ std::bitset<Key::SUBKEY_SIZE> Key::getKeyTwo() {
  */
 void Key::generateSubKeys() {
 
+    keyOne = 0;
+    keyTwo = 0;
     key10bit = 0;
     permuteTen();
     leftShiftOne();
@@ -79,7 +91,7 @@ void Key::generateSubKeys() {
  */
 void Key::permuteTen() {
 
-    unsigned int temp;
+    unsigned int temp = 0;
     for (int i = 0; i <= KEY_SIZE; i++) {
         temp = keyInput & masks[i];     // pick out the next bit from the original key
         if (pTenShifts[i] > 0)          // check which direction the shift is
@@ -136,8 +148,8 @@ void Key::leftShiftOne() {
  */
 unsigned int Key::permuteEight(unsigned int inputKey) {
 
-    int outputKey = 0;
-    unsigned int temp;
+    unsigned int outputKey = 0;
+    unsigned int temp = 0;
     for (int i = 0; i < 8; i++) {
         temp = key10bit & pEightMasks[i];   // pick out the next bit from the original key
         if (pEightShifts[i] > 0)            // check which direction the shift is
@@ -150,6 +162,8 @@ unsigned int Key::permuteEight(unsigned int inputKey) {
 #ifdef DEBUG_KEY
     std::cout << "The result of P8 is: " << outputKey << std::endl;
 #endif
+
+    return outputKey;
 
 }
 
