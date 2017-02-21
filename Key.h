@@ -1,3 +1,10 @@
+/**
+ * @file Key.h
+ *
+ * @authors Brady Anderson, Jesse Babcock
+ * @brief Contains the declaration of the Key class
+ */
+
 #ifndef _KEY_H
 #define _KEY_H
 
