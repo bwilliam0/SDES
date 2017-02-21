@@ -1,5 +1,12 @@
-// @authors: Brady Anderson, Jesse Babcock
-
+/**
+ * @file Key.cpp
+ *
+ * @authors: Brady Anderson, Jesse Babcock
+ *
+ * Key.cpp contains the definitions of the functions declared in Key.h and sets the values for the arrays of bit masks
+ * and bit shifts.
+ *
+ */
 #ifndef _KEY_CPP
 #define _KEY_CPP
 
