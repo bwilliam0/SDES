@@ -9,12 +9,7 @@
 
 */
 
-#include <iostream>
-#include <string>
-#include <bitset>
-#include <vector> // store bitsets in vector
-#include <random> // used to generate random number
-#include <time.h> // used to seed random generator
+#include "MasterHeader.h"
 #include "SDES.h"
 
 using namespace std;

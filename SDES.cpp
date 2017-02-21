@@ -8,9 +8,7 @@
 #ifndef _SDES_CPP
 #define _SDES_CPP
 
-#include <iostream>
-#include <string>
-#include <bitset> // used to store strings as a bitset
+#include "MasterHeader.h"
 #include "SDES.h"
 
 using namespace std;

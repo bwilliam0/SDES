@@ -10,8 +10,7 @@
 #ifndef _KEY_CPP
 #define _KEY_CPP
 
-#include <iostream>
-#include <bitset>
+#include "MasterHeader.h"
 #include "Key.h"
 
 // Define parallel arrays of bit masks and shift amounts used to permute the 10 and 8 bit key

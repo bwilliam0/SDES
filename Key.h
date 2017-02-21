@@ -1,9 +1,7 @@
 #ifndef _KEY_H
 #define _KEY_H
 
-#include <iostream>
-#include <stdexcept>
-#include <bitset>
+#include "MasterHeader.h"
 
 /**
  * @class Key Key.h This class generates two 8 bit SDES subkeys from a ten bit key provided to the constructor

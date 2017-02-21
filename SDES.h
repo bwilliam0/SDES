@@ -15,10 +15,7 @@
 #ifndef SDES_H_INCLUDED
 #define SDES_H_INCLUDED
 
-#include <iostream>
-#include <string>
-#include <bitset>
-#include <vector>
+#include "MasterHeader.h"
 #include "Key.h"
 
 using namespace std;
