@@ -1,7 +1,7 @@
 /**
  * @file Key.h
  *
- * @authors Brady Anderson, Jesse Babcock
+ * @authors Brady Anderson
  * @brief Contains the declaration of the Key class
  */
 
